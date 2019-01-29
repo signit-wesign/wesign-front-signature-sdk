@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Webpack App</title>
+    </head>
+    <body>
+        <div>
+            <p style="text-align:center;font-size:24px">
+                模拟调用方业务系统中的某一页面
+            </p>
+            <div style="text-align:center;">
+            <div>
+                <p>输入签署链接进行测试【调用签署成功之后，易企签返回的报文中附带的签署链接】</p>
+                <textarea rows="5" cols="60" id="src" placeholder="输入签署链接测试"></textarea>
+            </div>
+            <button id="open">打开签署页面</button>
+            <button id="close">关闭签署页面</button>
+        </div>
+        <script type="text/javascript" src="./wesign-signature-sdk.js"></script>
+        <script>
+            var wsign = null
+
+            document.getElementById("open").addEventListener("click", function(e){
+                var src = document.getElementById("src").value
+                wsign = new WesignSignatureSDK(src)
+                wsign.addEventListener("operationcomplete", listenOperationComplete)
+            })
+
+            document.getElementById("close").addEventListener("click", function(e){
+                if(!wsign) return
+                wsign.close()
+                wsign = null
+            })
+
+
+            function listenOperationComplete(event){
+                alert("operationcomplete:" + event.operation)
+                wsign.close()
+                wsign = null
+            }
+        </script>
+    </body>
+</html>
